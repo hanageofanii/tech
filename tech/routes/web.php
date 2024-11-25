@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\JenisPropertiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SaranController;
+use App\Http\Controllers\PropertyController;
 
 
 Route::get('/', function () {
@@ -19,4 +19,3 @@ Route::get('/', function () {
 // });
 
 Route::post('/saran', [SaranController::class, 'store'])->name('saran.store');
-Route::get('/jenis_properti', [JenisPropertiController::class, 'index']);

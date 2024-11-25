@@ -74,12 +74,12 @@
 
     <!-- Hero Section -->
     <section id="hero" class="relative bg-gradient-to-br from-blue-900 to-indigo-800 text-white overflow-hidden">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="absolute inset-0  opacity-50" style="background-color: #161A4C;"></div>
         <div class="absolute inset-0 bg-cover bg-center"
             style="background-image: url('https://images.unsplash.com/photo-1582719478181-2ce831843e31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');">
         </div>
 
-        <div class="container mx-auto px-4 py-24 md:py-80 relative z-10 -mt-7">
+        <div class="container mx-auto px-4 py-24 md:py-80 relative -mt-7">
             <div class="flex flex-col md:flex-row items-center justify-between">
                 <!-- Left Side: Company Info -->
                 <div class="w-full md:w-1/2 mb-12 md:mb-0">
@@ -107,7 +107,8 @@
                                 <svg class="w-6 h-6 mr-3 text-yellow-400" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        d=" M13 10V3L4 14h7v7l9-11h-7z">
+                                    </path>
                                 </svg>
                                 <span>Respon Cepat & Tepat</span>
                             </li>
@@ -275,20 +276,31 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                    @php
+                        use Illuminate\Support\Facades\DB;
+                        $jenisLayanans = DB::table('jenis_layanans')->get();
+                    @endphp
+
                     <div class="w-full sm:w-1/2">
                         <label class="block text-gray-700 font-bold mb-2" for="service">
-                            Service
+                            Jenis Layanan
                         </label>
                         <select
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="service" name="service">
-                            <option value="">Select a service</option>
-                            <option value="haircut">Haircut</option>
-                            <option value="coloring">Coloring</option>
-                            <option value="styling">Styling</option>
-                            <option value="facial">Facial</option>
+                            <option value="">Pilih Layanan</option>
+                            @foreach ($jenisLayanans as $layanan)
+                                <option value="{{ $layanan->id_jenis_layanan }}">
+                                    {{ $layanan->jenis_layanan }} - Rp {{ number_format($layanan->harga, 0, ',', '.') }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
+
+                    @php
+                        $jenisPropertis = DB::table('jenis_propertis')->get();
+                    @endphp
+
                     <div class="w-full sm:w-1/2">
                         <label class="block text-gray-700 font-bold mb-2" for="properti">
                             Jenis Properti
@@ -297,12 +309,12 @@
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="properti" name="properti">
                             <option value="">Select a property</option>
-                            <option value="house">House</option>
-                            <option value="apartment">Apartment</option>
-                            <option value="office">Office</option>
-                            <option value="shop">Shop</option>
+                            @foreach ($jenisPropertis as $jenis)
+                                <option value="{{ $jenis->id_jenis_properti }}">{{ $jenis->jenis_properti }}</option>
+                            @endforeach
                         </select>
                     </div>
+
                 </div>
 
                 <div class="mb-4">
@@ -493,7 +505,7 @@
     </section>
 
     {{-- cookie --}}
-    <section id="cookie-policy" class="fixed bottom-12 left-12 mb-4 mr-24 w-64">
+    {{-- <section id="cookie-policy" class="fixed bottom-12 left-12 mb-4 mr-24 w-64">
         <div class="bg-white rounded-lg shadow-lg p-4">
             <div class="flex items-center justify-between mb-2">
                 <div class="flex items-center">
@@ -515,12 +527,13 @@
                 Accept
             </button>
         </div>
-    </section>
+    </section> --}}
 
     {{-- ChatBot --}}
-    <section class="fixed bottom-0 right-0 mb-24 mr-12">
+    <section class="fixed bottom-0 right-0 mb-4 sm:mb-8 mr-4 sm:mr-8">
+        <!-- Chat Button -->
         <button id="open-chat"
-            class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-1 transition duration-300 flex items-center">
+            class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-400 transition duration-300 flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
@@ -528,9 +541,11 @@
             </svg>
             Chat with Admin Bot
         </button>
-        {{-- </section> --}}
-        <div id="chat-container" class="hidden fixed bottom-16 right-4 w-96">
-            <div class="bg-white shadow-md rounded-lg max-w-lg w-full">
+
+        <!-- Chat Container -->
+        <div id="chat-container"
+            class="hidden fixed bottom-16 right-4 sm:right-8 w-full sm:w-80 max-w-xs sm:max-w-md">
+            <div class="bg-white shadow-md rounded-lg w-full">
                 <div class="p-4 border-b bg-blue-500 text-white rounded-t-lg flex justify-between items-center">
                     <p class="text-lg font-semibold">Admin Bot</p>
                     <button id="close-chat"
@@ -542,42 +557,46 @@
                         </svg>
                     </button>
                 </div>
-                <div id="chatbox" class="p-4 h-80 overflow-y-auto">
-                    <!-- Chat messages will be displayed here -->
-                    <div class="mb-2 text-right">
+
+                <!-- Chat Messages -->
+                <div id="chatbox" class="p-4 h-64 sm:h-72 overflow-y-auto space-y-2">
+                    <!-- Example Chat Messages -->
+                    <div class="text-right">
                         <p class="bg-blue-500 text-white rounded-lg py-2 px-4 inline-block">hello</p>
                     </div>
-                    <div class="mb-2">
+                    <div>
                         <p class="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">This is a response from
-                            the
-                            chatbot.</p>
+                            the chatbot.</p>
                     </div>
-                    <div class="mb-2 text-right">
+                    <div class="text-right">
                         <p class="bg-blue-500 text-white rounded-lg py-2 px-4 inline-block">this example of chat</p>
                     </div>
-                    <div class="mb-2">
+                    <div>
                         <p class="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">This is a response from
-                            the
-                            chatbot.</p>
+                            the chatbot.</p>
                     </div>
-                    <div class="mb-2 text-right">
+                    <div class="text-right">
                         <p class="bg-blue-500 text-white rounded-lg py-2 px-4 inline-block">design with tailwind</p>
                     </div>
-                    <div class="mb-2">
+                    <div>
                         <p class="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">This is a response from
-                            the
-                            chatbot.</p>
+                            the chatbot.</p>
                     </div>
                 </div>
+
+                <!-- Input and Send Button -->
                 <div class="p-4 border-t flex">
                     <input id="user-input" type="text" placeholder="Type a message"
                         class="w-full px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <button id="send-button"
-                        class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-1 transition duration-300">Send</button>
+                        class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-400 transition duration-300">Send</button>
                 </div>
             </div>
         </div>
     </section>
+
+
+
     <script>
         const chatbox = document.getElementById("chatbox");
         const chatContainer = document.getElementById("chat-container");

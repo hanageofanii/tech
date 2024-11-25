@@ -11,6 +11,7 @@ class JenisProperti extends Model
 
     protected $primaryKey = 'id_jenis_properti';
 
+    protected $table = 'jenis_propertis';
     protected $fillable = [
         'id_jenis_properti',
         'jenis_properti',
