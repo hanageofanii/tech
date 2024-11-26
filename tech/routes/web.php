@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SaranController;
-use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\DataController;
 
 
 Route::get('/', function () {
@@ -19,3 +19,5 @@ Route::get('/', function () {
 // });
 
 Route::post('/saran', [SaranController::class, 'store'])->name('saran.store');
+
+Route::post('/submit', [DataController::class, 'store'])->name('submit.form');

@@ -9,10 +9,18 @@ class DataLayananPelanggan extends Model
 {
     use HasFactory;
 
+    protected $table = 'data_layanan_pelanggans';
     protected $primaryKey = 'id_data'; 
     protected $fillable = [
-        'id_teknisi', 'nama', 'email', 'no_hp', 'alamat', 
-        'id_jenis_layanan', 'id_jenis_properti', 'tanggal', 'waktu', 'notes'
+        'nama',
+        'email',
+        'no_hp',
+        'alamat',
+        'id_jenis_layanan',
+        'id_jenis_properti',
+        'tanggal',
+        'waktu',
+        'notes',
     ];
 
     // Relationship to Teknisi

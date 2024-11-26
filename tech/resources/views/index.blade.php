@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Air Conditioner - CV Rama Tehnik</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Menyertakan Tailwind CSS dari CDN untuk styling -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Memanggil favicon -->
@@ -218,121 +220,126 @@
                 style="background-color: #161A4C;">
                 Reservasi Form
             </div>
-            <form class="py-4 px-6" action="" method="POST">
+            <form class="py-4 px-6" action="{{ route('submit.form') }}" method="POST">
+                @csrf
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-bold mb-2" for="name">
+                    <label for="nama" class="block text-gray-700 font-bold mb-2" for="name">
                         Name
                     </label>
-                    <input
+                    <input type="text" id="nama" name="nama"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="name" type="text" placeholder="Enter your name">
+                        required>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
                     <div class="w-full sm:w-1/2">
-                        <label class="block text-gray-700 font-bold mb-2" for="email">
+                        <label for="email" class="block text-gray-700 font-bold mb-2" for="email">
                             Email
                         </label>
-                        <input
+                        <input type="email" id="email" name="email"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="email" type="email" placeholder="Enter your email">
+                            required>
                     </div>
                     <div class="w-full sm:w-1/2">
-                        <label class="block text-gray-700 font-bold mb-2" for="phone">
+                        <label for="no_hp" class="block text-gray-700 font-bold mb-2" for="phone">
                             Phone Number
                         </label>
-                        <input
+                        <input type="text" id="no_hp" name="no_hp"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="phone" type="tel" placeholder="Enter your phone number">
+                            required>
                     </div>
                 </div>
-
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-bold mb-4" for="address">
+                    <label for="alamat" class="block text-gray-700 font-bold mb-4" for="address">
                         Address
                     </label>
-                    <input
+                    <textarea id="alamat" name="alamat"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="address" type="text" placeholder="Enter your address">
+                        required></textarea>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
                     <div class="w-full sm:w-1/2">
-                        <label class="block text-gray-700 font-bold mb-2" for="date">
+                        <label for="tanggal" class="block text-gray-700 font-bold mb-2" for="date">
                             Date
                         </label>
-                        <input
+                        <input type="date" id="tanggal" name="tanggal"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="date" type="date" placeholder="Select a date">
+                            required>
                     </div>
                     <div class="w-full sm:w-1/2">
-                        <label class="block text-gray-700 font-bold mb-2" for="time">
+                        <label for="waktu" class="block text-gray-700 font-bold mb-2" for="time">
                             Time
                         </label>
-                        <input
+                        <input type="time" id="waktu" name="waktu"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="time" type="time" placeholder="Select a time">
+                            required>
                     </div>
                 </div>
-
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
                     @php
-                        use Illuminate\Support\Facades\DB;
                         $jenisLayanans = DB::table('jenis_layanans')->get();
+                        $jenisPropertis = DB::table('jenis_propertis')->get();
                     @endphp
 
+                    <!-- Jenis Layanan -->
                     <div class="w-full sm:w-1/2">
-                        <label class="block text-gray-700 font-bold mb-2" for="service">
-                            Jenis Layanan
-                        </label>
+                        <label class="block text-gray-700 font-bold mb-2" for="service">Jenis Layanan</label>
                         <select
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="service" name="service">
+                            id="service" name="id_jenis_layanan" required>
                             <option value="">Pilih Layanan</option>
                             @foreach ($jenisLayanans as $layanan)
                                 <option value="{{ $layanan->id_jenis_layanan }}">
-                                    {{ $layanan->jenis_layanan }} - Rp {{ number_format($layanan->harga, 0, ',', '.') }}
+                                    {{ $layanan->jenis_layanan }} - Rp
+                                    {{ number_format($layanan->harga, 0, ',', '.') }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
-                    @php
-                        $jenisPropertis = DB::table('jenis_propertis')->get();
-                    @endphp
-
+                    <!-- Jenis Properti -->
                     <div class="w-full sm:w-1/2">
-                        <label class="block text-gray-700 font-bold mb-2" for="properti">
-                            Jenis Properti
-                        </label>
+                        <label class="block text-gray-700 font-bold mb-2" for="properti">Jenis Properti</label>
                         <select
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="properti" name="properti">
-                            <option value="">Select a property</option>
+                            id="properti" name="id_jenis_properti" required>
+                            <option value="">Pilih Properti</option>
                             @foreach ($jenisPropertis as $jenis)
-                                <option value="{{ $jenis->id_jenis_properti }}">{{ $jenis->jenis_properti }}</option>
+                                <option value="{{ $jenis->id_jenis_properti }}">{{ $jenis->jenis_properti }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
-
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-bold mb-2" for="message">
-                        Message
-                    </label>
-                    <textarea
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="message" rows="4" placeholder="Enter any additional information"></textarea>
+                    <label for="notes" class="block text-gray-700 font-bold mb-2">Catatan</label>
+                    <textarea id="notes" name="notes"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 </div>
-                <div class="flex items-center justify-center mb-4">
-                    <button
-                        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-1 focus:outline-none focus:shadow-outline"
-                        type="submit">
-                        Reservasi
-                    </button>
+                <div class="mb-4">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Kirim</button>
                 </div>
             </form>
+            @if (session('success'))
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: '{{ session('success') }}',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Tutup',
+                        timer: 5000
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('#regis').scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                </script>
+            @endif
         </div>
     </section>
 
@@ -389,12 +396,25 @@
 
                     <button type="submit" class="bg-blue-500 hover:bg-1 text-white p-2 rounded">Kirim</button>
                 </form>
-
-                @if (session('success'))
-                    <div class="mt-4 text-green-600">
-                        {{ session('success') }}
-                    </div>
+                @if (session('sukses'))
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Terima Kasih atas umpan balik Anda',
+                            text: '{{ session('sukses') }}',
+                            showConfirmButton: true,
+                            confirmButtonText: 'Tutup',
+                            timer: 5000
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('contact').scrollIntoView({
+                                    behavior: 'smooth'
+                                });
+                            }
+                        });
+                    </script>
                 @endif
+
             </div>
         </div>
     </section>
@@ -504,30 +524,32 @@
             </footer>
     </section>
 
-    {{-- cookie --}}
-    {{-- <section id="cookie-policy" class="fixed bottom-12 left-12 mb-4 mr-24 w-64">
-        <div class="bg-white rounded-lg shadow-lg p-4">
+    {{-- cookie policy --}}
+    <section id="cookie-policy" class="fixed bottom-12 left-12 mb-4 mr-24 w-48">
+        <div class="bg-white rounded-lg shadow-lg p-3">
             <div class="flex items-center justify-between mb-2">
                 <div class="flex items-center">
-                    <img src="https://www.svgrepo.com/show/401340/cookie.svg" alt="Cookie" class="h-6 w-6 mr-2">
-                    <span class="text-gray-700 font-bold text-sm">Cookie Policy</span>
+                    <img src="https://www.svgrepo.com/show/401340/cookie.svg" alt="Cookie" class="h-5 w-5 mr-2">
+                    <span class="text-gray-700 font-bold text-xs">Cookie Policy</span>
                 </div>
                 <button id="close-button" class="text-gray-500 hover:text-gray-700 focus:outline-none">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
-            <p class="text-gray-600 text-sm">
+            <p class="text-gray-600 text-xs">
                 We use cookies to enhance your experience. By continuing to visit this site, you agree to our use of
                 cookies.
             </p>
-            <button id="accept-button" class="mt-4 bg-blue-500 hover:bg-1 text-white font-bold py-2 px-4 rounded">
+            <button id="accept-button"
+                class="mt-2 bg-blue-500 hover:bg-1 text-white text-xs font-bold py-1 px-3 rounded">
                 Accept
             </button>
         </div>
-    </section> --}}
+    </section>
+
 
     {{-- ChatBot --}}
     <section class="fixed bottom-0 right-0 mb-4 sm:mb-8 mr-4 sm:mr-8">

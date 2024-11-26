@@ -20,7 +20,7 @@ class SaranController extends Controller
             'nama' => $request->nama,
             'saran' => $request->saran,
         ]);
-
+        
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Saran Anda telah berhasil dikirim.');
     }
