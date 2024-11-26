@@ -318,8 +318,8 @@
                     <textarea id="notes" name="notes"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 </div>
-                <div class="mb-4">
-                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Kirim</button>
+                <div class="mb-4 flex justify-center items-center">
+                    <button type="submit" class="bg-blue-500 hover:bg-1 text-white py-2 px-4 rounded">Kirim</button>
                 </div>
             </form>
             @if (session('success'))
@@ -394,7 +394,12 @@
                             class="w-full bg-gray-100 rounded border border-gray-300 focus:ring-2 focus:ring-indigo-200 focus:bg-white h-32 text-base outline-none text-gray-700 resize-none p-2"></textarea>
                     </div>
 
-                    <button type="submit" class="bg-blue-500 hover:bg-1 text-white p-2 rounded">Kirim</button>
+                    <div class="flex justify-center items-center">
+                        <button type="submit"
+                            class="mt-2 bg-blue-500 hover:bg-1 text-white text-xs font-bold py-2 px-4 rounded">
+                            Kirim
+                        </button>
+                    </div>
                 </form>
                 @if (session('sukses'))
                     <script>
