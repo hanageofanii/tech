@@ -22,6 +22,8 @@ class TeknisiResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Teknisi';
 
+    protected static ?string $pluralLabel = 'Teknisi';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -45,10 +47,10 @@ class TeknisiResource extends Resource
                 ->dateTime('Y-m-d H:i:s')
                 ->searchable()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')    
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()    
-                ->sortable(),
+                // Tables\Columns\TextColumn::make('deleted_at')    
+                // ->dateTime('Y-m-d H:i:s')
+                // ->searchable()    
+                // ->sortable(),
             ])
             ->filters([
                 //

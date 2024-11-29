@@ -22,6 +22,7 @@ class JenisLayananResource extends Resource
 
     protected static ?string $navigationLabel = 'Jenis Layanan';
 
+    protected static ?string $pluralLabel = 'Jenis Layanan';
     protected static ?string $navigationGroup = 'Extra';
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
@@ -55,10 +56,6 @@ class JenisLayananResource extends Resource
             Tables\Columns\TextColumn::make('updated_at')
                 ->dateTime('Y-m-d H:i:s')
                 ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('deleted_at')    
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()    
                 ->sortable(),
                 
             ])

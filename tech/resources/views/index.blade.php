@@ -221,61 +221,57 @@
                 Reservasi Form
             </div>
             <form class="py-4 px-6" action="{{ route('submit.form') }}" method="POST">
-                @csrf
+                @csrf <!-- CSRF token for security -->
+
+                <!-- Name -->
                 <div class="mb-4">
-                    <label for="nama" class="block text-gray-700 font-bold mb-2" for="name">
-                        Name
-                    </label>
+                    <label for="nama" class="block text-gray-700 font-bold mb-2">Name</label>
                     <input type="text" id="nama" name="nama"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         required>
                 </div>
 
+                <!-- Email and Phone Number -->
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
                     <div class="w-full sm:w-1/2">
-                        <label for="email" class="block text-gray-700 font-bold mb-2" for="email">
-                            Email
-                        </label>
+                        <label for="email" class="block text-gray-700 font-bold mb-2">Email</label>
                         <input type="email" id="email" name="email"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             required>
                     </div>
                     <div class="w-full sm:w-1/2">
-                        <label for="no_hp" class="block text-gray-700 font-bold mb-2" for="phone">
-                            Phone Number
-                        </label>
+                        <label for="no_hp" class="block text-gray-700 font-bold mb-2">Phone Number</label>
                         <input type="text" id="no_hp" name="no_hp"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             required>
                     </div>
                 </div>
+
+                <!-- Address -->
                 <div class="mb-4">
-                    <label for="alamat" class="block text-gray-700 font-bold mb-4" for="address">
-                        Address
-                    </label>
+                    <label for="alamat" class="block text-gray-700 font-bold mb-4">Address</label>
                     <textarea id="alamat" name="alamat"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         required></textarea>
                 </div>
 
+                <!-- Date and Time -->
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
                     <div class="w-full sm:w-1/2">
-                        <label for="tanggal" class="block text-gray-700 font-bold mb-2" for="date">
-                            Date
-                        </label>
+                        <label for="tanggal" class="block text-gray-700 font-bold mb-2">Date</label>
                         <input type="date" id="tanggal" name="tanggal"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             required>
                     </div>
                     <div class="w-full sm:w-1/2">
-                        <label for="waktu" class="block text-gray-700 font-bold mb-2" for="time">
-                            Time
-                        </label>
+                        <label for="waktu" class="block text-gray-700 font-bold mb-2">Time</label>
                         <input type="time" id="waktu" name="waktu"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             required>
                     </div>
                 </div>
+
+                <!-- Jenis Layanan and Jenis Properti -->
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
                     @php
                         $jenisLayanans = DB::table('jenis_layanans')->get();
@@ -284,15 +280,14 @@
 
                     <!-- Jenis Layanan -->
                     <div class="w-full sm:w-1/2">
-                        <label class="block text-gray-700 font-bold mb-2" for="service">Jenis Layanan</label>
-                        <select
+                        <label for="service" class="block text-gray-700 font-bold mb-2">Jenis Layanan</label>
+                        <select id="service" name="id_jenis_layanan"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="service" name="id_jenis_layanan" required>
+                            required>
                             <option value="">Pilih Layanan</option>
                             @foreach ($jenisLayanans as $layanan)
                                 <option value="{{ $layanan->id_jenis_layanan }}">
-                                    {{ $layanan->jenis_layanan }} - Rp
-                                    {{ number_format($layanan->harga, 0, ',', '.') }}
+                                    {{ $layanan->jenis_layanan }} - Rp {{ number_format($layanan->harga, 0, ',', '.') }}
                                 </option>
                             @endforeach
                         </select>
@@ -300,28 +295,32 @@
 
                     <!-- Jenis Properti -->
                     <div class="w-full sm:w-1/2">
-                        <label class="block text-gray-700 font-bold mb-2" for="properti">Jenis Properti</label>
-                        <select
+                        <label for="properti" class="block text-gray-700 font-bold mb-2">Jenis Properti</label>
+                        <select id="properti" name="id_jenis_properti"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="properti" name="id_jenis_properti" required>
+                            required>
                             <option value="">Pilih Properti</option>
                             @foreach ($jenisPropertis as $jenis)
-                                <option value="{{ $jenis->id_jenis_properti }}">{{ $jenis->jenis_properti }}
-                                </option>
+                                <option value="{{ $jenis->id_jenis_properti }}">{{ $jenis->jenis_properti }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
 
+                <!-- Notes -->
                 <div class="mb-4">
                     <label for="notes" class="block text-gray-700 font-bold mb-2">Catatan</label>
                     <textarea id="notes" name="notes"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 </div>
+
+                <!-- Submit Button -->
                 <div class="mb-4 flex justify-center items-center">
                     <button type="submit" class="bg-blue-500 hover:bg-1 text-white py-2 px-4 rounded">Kirim</button>
                 </div>
             </form>
+
+            <!-- Success Message -->
             @if (session('success'))
                 <script>
                     Swal.fire({
@@ -333,7 +332,7 @@
                         timer: 5000
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            document.getElementById('#regis').scrollIntoView({
+                            document.getElementById('regis').scrollIntoView({
                                 behavior: 'smooth'
                             });
                         }
@@ -342,6 +341,7 @@
             @endif
         </div>
     </section>
+
 
 
     <!-- Feedback Section -->
@@ -435,9 +435,8 @@
                         <div class="px-4 my-4 w-full sm:w-auto xl:w-1/5 text-center sm:text-left">
                             <h2 class="text-3xl font-bold text-black">CV Rama Tehnik</h2>
                             <p class="text-justify sm:text-justify mt-4">
-                                CV Rama Tehnik menyediakan layanan perbaikan AC terbaik, yang mengkhususkan diri dalam
-                                pemasangan, perbaikan, dan pemeliharaan AC secara profesional. Kami berkomitmen untuk
-                                memberikan solusi yang andal, efisien, dan tepat waktu demi kepuasan pelanggan.
+                                CV Rama Tehnik menawarkan layanan pemasangan, perbaikan, dan pemeliharaan AC dengan
+                                solusi andal dan tepat waktu.
                             </p>
                         </div>
 

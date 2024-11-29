@@ -4,6 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Pelanggan;
+use App\Models\Transaksi;
+use App\Models\JenisLayanan;
+use App\Models\JenisProperti;
+use App\Models\User;
+use App\Models\Teknisi;
+use Illuminate\Support\Facades\Auth;
 
 class DataController extends Controller
 {
@@ -22,20 +29,44 @@ class DataController extends Controller
             'notes' => 'nullable|string|max:500',
         ]);
 
-        // Simpan data ke database
-        DB::table('data_layanan_pelanggans')->insert([
+        // Cek apakah pelanggan sudah ada berdasarkan email
+        $pelanggan = Pelanggan::firstOrCreate(
+            ['email' => $validated['email']], // Kondisi pencarian
+            [   // Jika tidak ditemukan, buat pelanggan baru dengan data berikut
+                'nama' => $validated['nama'],
+                'no_hp' => $validated['no_hp'],
+                'alamat' => $validated['alamat'],
+            ]
+        );
+
+        // Simpan data ke tabel `data_layanan_pelanggans`
+        $dataLayanan = DB::table('data_layanan_pelanggans')->insertGetId([
             'id_jenis_layanan' => $validated['id_jenis_layanan'],
             'id_jenis_properti' => $validated['id_jenis_properti'],
-            'nama' => $validated['nama'],
-            'email' => $validated['email'],
-            'no_hp' => $validated['no_hp'],
-            'alamat' => $validated['alamat'],
+            'nama' => $pelanggan->nama,
+            'email' => $pelanggan->email,
+            'no_hp' => $pelanggan->no_hp,
+            'alamat' => $pelanggan->alamat,
             'tanggal' => $validated['tanggal'],
             'waktu' => $validated['waktu'],
             'notes' => $validated['notes'],
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+         // Find the teknisi (e.g., logged-in teknisi or select one)
+    $teknisi = Teknisi::first();  // Or fetch a specific teknisi based on some logic
+
+    // Simpan data ke tabel `transaksis`
+    Transaksi::create([
+        'id_teknisi' => $teknisi ? $teknisi->id_teknisi : null, // Assuming you get teknisi based on the logic
+        'id_jenis_layanan' => $validated['id_jenis_layanan'],
+        'id_jenis_properti' => $validated['id_jenis_properti'],
+        'nama' => $pelanggan->nama,
+        'total_biaya' => 0, // You can set this to a calculated value if needed
+        'status' => 'progress', // Or set the status as needed
+        'id' => Auth::id(), // User ID who is creating this transaction
+    ]);
 
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Data berhasil disimpan!');

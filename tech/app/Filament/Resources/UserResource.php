@@ -19,6 +19,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationLabel = 'User';
 
+    protected static ?string $pluralLabel = 'User';
+
     protected static ?string $navigationGroup = 'Extra';
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
@@ -50,10 +52,10 @@ class UserResource extends Resource
             ->label('Nama')
             ->searchable(),
             Tables\Columns\TextColumn::make('email')->sortable()->searchable()->label('Email'),
-            Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime('d-m-Y')
-                    ->sortable()
-                    ->searchable(),
+            // Tables\Columns\TextColumn::make('deleted_at')
+            //         ->dateTime('d-m-Y')
+            //         ->sortable()
+            //         ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('d-m-Y')
                     ->sortable()

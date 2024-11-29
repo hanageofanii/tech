@@ -27,6 +27,7 @@ class DataLayananPelangganResource extends Resource
 
     protected static ?string $navigationLabel = 'Data Layanan';
 
+    protected static ?string $pluralLabel = 'Data Layanan Pelanggan';
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
 
     public static function form(Forms\Form $form): Forms\Form
@@ -66,7 +67,6 @@ class DataLayananPelangganResource extends Resource
             TextColumn::make('notes')->sortable()->searchable(),
             TextColumn::make('created_at')->dateTime('Y-m-d H:i:s')->searchable()->sortable(),
             TextColumn::make('updated_at')->dateTime('Y-m-d H:i:s')->searchable()->sortable(),
-            TextColumn::make('deleted_at')->dateTime('Y-m-d H:i:s')->searchable()->sortable(),
         ])
         ->actions([
             Tables\Actions\EditAction::make(),

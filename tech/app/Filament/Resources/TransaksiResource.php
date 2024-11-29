@@ -22,6 +22,9 @@ class TransaksiResource extends Resource
 
     protected static ?string $navigationLabel = 'Transaksi';
 
+    protected static ?string $pluralLabel = 'Transaksi';
+
+
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
     public static function form(Forms\Form $form): Forms\Form
@@ -46,10 +49,10 @@ class TransaksiResource extends Resource
                 ->options(JenisProperti::all()->pluck('jenis_properti', 'id_jenis_properti'))
                 ->required(),
 
-            Forms\Components\TextInput::make('total_biaya')
-                ->label('Total Biaya')
-                ->numeric()
-                ->required(),
+            // Forms\Components\TextInput::make('total_biaya')
+            //     ->label('Total Biaya')
+            //     ->numeric()
+            //     ->required(),
 
             Forms\Components\Select::make('status')
                 ->label('Status')
@@ -60,10 +63,10 @@ class TransaksiResource extends Resource
                 ])
                 ->required(),
 
-            Forms\Components\Select::make('id')
-                ->label('User')
-                ->options(User::all()->pluck('name', 'id'))
-                ->required(),
+            // Forms\Components\Select::make('id')
+            //     ->label('User')
+            //     ->options(User::all()->pluck('name', 'id'))
+            //     ->required(),
         ]);
     }
 
@@ -85,8 +88,8 @@ class TransaksiResource extends Resource
                 ->sortable()
                 ->searchable(),
 
-            Tables\Columns\TextColumn::make('total_biaya')
-                ->label('Total Biaya')
+            Tables\Columns\TextColumn::make('jenisLayanan.harga')
+                ->label('Biaya')
                 ->money('IDR')
                 ->sortable()
                 ->searchable(),
@@ -116,10 +119,10 @@ class TransaksiResource extends Resource
                 ->sortable()
                 ->searchable(),
 
-            Tables\Columns\TextColumn::make('deleted_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->sortable()
-                ->searchable(),
+            // Tables\Columns\TextColumn::make('deleted_at')
+            //     ->dateTime('Y-m-d H:i:s')
+            //     ->sortable()
+            //     ->searchable(),
         ])
         ->filters([
             //
@@ -131,7 +134,7 @@ class TransaksiResource extends Resource
         ])
         ->bulkActions([
             Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
+            Tables\Actions\DeleteBulkAction::make(),
             ]),
         ]);
     }

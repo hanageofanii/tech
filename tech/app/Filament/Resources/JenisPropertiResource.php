@@ -18,6 +18,9 @@ class JenisPropertiResource extends Resource
     protected static ?string $model = JenisProperti::class;
 
     protected static ?string $navigationLabel = 'Jenis Properti';
+
+    protected static ?string $pluralLabel = 'Jenis Properti';
+
     protected static ?string $navigationGroup = 'Extra';
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
 
@@ -45,10 +48,10 @@ class JenisPropertiResource extends Resource
                 ->dateTime('Y-m-d H:i:s')
                 ->searchable()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('deleted_at')    
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()    
-                ->sortable(),
+            // Tables\Columns\TextColumn::make('deleted_at')    
+            //     ->dateTime('Y-m-d H:i:s')
+            //     ->searchable()    
+            //     ->sortable(),
             ])
             ->filters([
                 //

@@ -20,6 +20,9 @@ class PelangganResource extends Resource
     protected static ?string $navigationGroup = 'Extra';
     protected static ?string $navigationLabel = 'Pelanggan';
 
+    protected static ?string $pluralLabel = 'Pelanggan';
+
+
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -47,10 +50,10 @@ class PelangganResource extends Resource
                     ->dateTime('Y-m-d H:i:s')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->searchable()
-                    ->sortable(),   
+                // Tables\Columns\TextColumn::make('deleted_at')
+                //     ->dateTime('Y-m-d H:i:s')
+                //     ->searchable()
+                //     ->sortable(),   
             ])
             ->filters([
                 //

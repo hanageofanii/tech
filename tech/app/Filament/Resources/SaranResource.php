@@ -19,6 +19,8 @@ class SaranResource extends Resource
 
     protected static ?string $navigationLabel = 'Saran';
 
+    protected static ?string $pluralLabel = 'Saran';
+
     protected static ?string $navigationGroup = 'Extra'; 
     
     protected static ?string $navigationIcon = 'heroicon-o-inbox';
@@ -48,10 +50,10 @@ class SaranResource extends Resource
                 ->dateTime('Y-m-d H:i:s')
                 ->searchable()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')    
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()    
-                ->sortable(),
+                // Tables\Columns\TextColumn::make('deleted_at')    
+                // ->dateTime('Y-m-d H:i:s')
+                // ->searchable()    
+                // ->sortable(),
             ])
             ->filters([
                 //
