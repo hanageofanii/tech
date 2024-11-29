@@ -57,7 +57,7 @@ class DataLayananPelangganResource extends Resource
     {
         return $table->columns([
             // TextColumn::make('user.name')->label('Id User')->sortable()->searchable(),
-            TextColumn::make('teknisi.nama')->label('Nama Teknisi')->sortable()->searchable(),
+            // TextColumn::make('teknisi.nama')->label('Nama Teknisi')->sortable()->searchable(),
             TextColumn::make('nama')->sortable()->searchable(),
             TextColumn::make('email')->sortable()->searchable(),
             TextColumn::make('no_hp')->sortable()->searchable(),
@@ -92,7 +92,7 @@ class DataLayananPelangganResource extends Resource
         return [
             'index' => Pages\ListDataLayananPelanggans::route('/'),
             'create' => Pages\CreateDataLayananPelanggan::route('/create'),
-            'edit' => Pages\EditDataLayananPelanggan::route('/{record}/edit'),
+            // 'edit' => Pages\EditDataLayananPelanggan::route('/{record}/edit'),
         ];
     }
 }
