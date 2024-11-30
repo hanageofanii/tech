@@ -320,7 +320,7 @@
 
                 <!-- Submit Button -->
                 <div class="mb-4 flex justify-center items-center">
-                    <button type="submit" class="bg-blue-500 hover:bg-1 text-white py-2 px-4 rounded">Kirim</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-1 text-white py-2 px-12 rounded">Kirim</button>
                 </div>
             </form>
 
@@ -345,6 +345,7 @@
             @endif
         </div>
     </section>
+
 
 
 

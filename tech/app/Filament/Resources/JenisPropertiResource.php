@@ -40,14 +40,14 @@ class JenisPropertiResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('jenis_properti')->label('Jenis Properti'),
-            Tables\Columns\TextColumn::make('created_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('updated_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()
-                ->sortable(),
+            // Tables\Columns\TextColumn::make('created_at')
+            //     ->dateTime('Y-m-d H:i:s')
+            //     ->searchable()
+            //     ->sortable(),
+            // Tables\Columns\TextColumn::make('updated_at')
+            //     ->dateTime('Y-m-d H:i:s')
+            //     ->searchable()
+            //     ->sortable(),
             // Tables\Columns\TextColumn::make('deleted_at')    
             //     ->dateTime('Y-m-d H:i:s')
             //     ->searchable()    
@@ -80,7 +80,7 @@ class JenisPropertiResource extends Resource
         return [
             'index' => Pages\ListJenisPropertis::route('/'),
             'create' => Pages\CreateJenisProperti::route('/create'),
-            'edit' => Pages\EditJenisProperti::route('/{record}/edit'),
+            // 'edit' => Pages\EditJenisProperti::route('/{record}/edit'),
         ];
     }
 }

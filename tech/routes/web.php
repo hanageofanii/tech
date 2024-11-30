@@ -23,3 +23,4 @@ Route::post('/saran', [SaranController::class, 'store'])->name('saran.store');
 Route::post('/submit', [DataController::class, 'store'])->name('submit.form');
 
 
+

@@ -65,8 +65,10 @@ class DataLayananPelangganResource extends Resource
             TextColumn::make('jenisLayanan.jenis_layanan')->label('Jenis Layanan')->sortable()->searchable(),
             TextColumn::make('jenisProperti.jenis_properti')->label('Jenis Properti')->sortable()->searchable(),
             TextColumn::make('notes')->sortable()->searchable(),
-            TextColumn::make('created_at')->dateTime('Y-m-d H:i:s')->searchable()->sortable(),
-            TextColumn::make('updated_at')->dateTime('Y-m-d H:i:s')->searchable()->sortable(),
+            TextColumn::make('tanggal')->dateTime('Y-m-d')->sortable()->searchable(),
+            TextColumn::make('waktu')->dateTime('H:i')->sortable()->searchable(),
+            // TextColumn::make('created_at')->dateTime('Y-m-d H:i:s')->searchable()->sortable(),
+            // TextColumn::make('updated_at')->dateTime('Y-m-d H:i:s')->searchable()->sortable(),
         ])
         ->actions([
             Tables\Actions\EditAction::make(),

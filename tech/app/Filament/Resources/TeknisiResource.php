@@ -39,14 +39,14 @@ class TeknisiResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')->sortable()->searchable()->label('Nama'),
                 Tables\Columns\TextColumn::make('email')->sortable()->searchable()->label('Email'),
-                Tables\Columns\TextColumn::make('created_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()
-                ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()
-                ->sortable(),
+                // Tables\Columns\TextColumn::make('created_at')
+                // ->dateTime('Y-m-d H:i:s')
+                // ->searchable()
+                // ->sortable(),
+                // Tables\Columns\TextColumn::make('updated_at')
+                // ->dateTime('Y-m-d H:i:s')
+                // ->searchable()
+                // ->sortable(),
                 // Tables\Columns\TextColumn::make('deleted_at')    
                 // ->dateTime('Y-m-d H:i:s')
                 // ->searchable()    
@@ -79,7 +79,7 @@ class TeknisiResource extends Resource
         return [
             'index' => Pages\ListTeknisis::route('/'),
             'create' => Pages\CreateTeknisi::route('/create'),
-            'edit' => Pages\EditTeknisi::route('/{record}/edit'),
+            // 'edit' => Pages\EditTeknisi::route('/{record}/edit'),
         ];
     }
 }

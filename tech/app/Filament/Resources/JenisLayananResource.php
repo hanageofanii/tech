@@ -49,14 +49,14 @@ class JenisLayananResource extends Resource
                 Tables\Columns\TextColumn::make('id_jenis_layanan')->sortable(),
                 Tables\Columns\TextColumn::make('jenis_layanan')->label('Jenis Layanan'),
                 Tables\Columns\TextColumn::make('harga')->sortable(),
-            Tables\Columns\TextColumn::make('created_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('updated_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()
-                ->sortable(),
+            // Tables\Columns\TextColumn::make('created_at')
+            //     ->dateTime('Y-m-d H:i:s')
+            //     ->searchable()
+            //     ->sortable(),
+            // Tables\Columns\TextColumn::make('updated_at')
+            //     ->dateTime('Y-m-d H:i:s')
+            //     ->searchable()
+            //     ->sortable(),
                 
             ])
             ->filters([
@@ -86,7 +86,7 @@ class JenisLayananResource extends Resource
         return [
             'index' => Pages\ListJenisLayanans::route('/'),
             'create' => Pages\CreateJenisLayanan::route('/create'),
-            'edit' => Pages\EditJenisLayanan::route('/{record}/edit'),
+            // 'edit' => Pages\EditJenisLayanan::route('/{record}/edit'),
         ];
     }
 }

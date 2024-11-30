@@ -42,14 +42,14 @@ class SaranResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')->label('Nama')->searchable(),
                 Tables\Columns\TextColumn::make('saran')->label('Saran')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()
-                ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->searchable()
-                ->sortable(),
+                // Tables\Columns\TextColumn::make('created_at')
+                // ->dateTime('Y-m-d H:i:s')
+                // ->searchable()
+                // ->sortable(),
+                // Tables\Columns\TextColumn::make('updated_at')
+                // ->dateTime('Y-m-d H:i:s')
+                // ->searchable()
+                // ->sortable(),
                 // Tables\Columns\TextColumn::make('deleted_at')    
                 // ->dateTime('Y-m-d H:i:s')
                 // ->searchable()    
@@ -82,7 +82,7 @@ class SaranResource extends Resource
         return [
             'index' => Pages\ListSarans::route('/'),
             'create' => Pages\CreateSaran::route('/create'),
-            'edit' => Pages\EditSaran::route('/{record}/edit'),
+            // 'edit' => Pages\EditSaran::route('/{record}/edit'),
         ];
     }
 }

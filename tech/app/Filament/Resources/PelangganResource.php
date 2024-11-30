@@ -42,14 +42,14 @@ class PelangganResource extends Resource
                 Tables\Columns\TextColumn::make('email')->sortable()->searchable()->label('Email'),
                 Tables\Columns\TextColumn::make('no_hp')->sortable()->searchable()->label('No. HP'),
                 Tables\Columns\TextColumn::make('alamat')->sortable()->searchable()->label('Alamat'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->searchable()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->dateTime('Y-m-d H:i:s')
+                //     ->sortable()
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('updated_at')
+                //     ->dateTime('Y-m-d H:i:s')
+                //     ->searchable()
+                //     ->sortable(),
                 // Tables\Columns\TextColumn::make('deleted_at')
                 //     ->dateTime('Y-m-d H:i:s')
                 //     ->searchable()
@@ -80,7 +80,7 @@ class PelangganResource extends Resource
         return [
             'index' => ListPelanggans::route('/'),
             'create' => CreatePelanggan::route('/create'),
-            'edit' => EditPelanggan::route('/{record}/edit'),
+            // 'edit' => EditPelanggan::route('/{record}/edit'),
         ];
     }
 }

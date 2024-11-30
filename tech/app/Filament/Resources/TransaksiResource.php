@@ -109,15 +109,15 @@ class TransaksiResource extends Resource
                 ->sortable()
                 ->searchable(),
 
-            Tables\Columns\TextColumn::make('created_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->sortable()
-                ->searchable(),
+            // Tables\Columns\TextColumn::make('created_at')
+            //     ->dateTime('Y-m-d H:i:s')
+            //     ->sortable()
+            //     ->searchable(),
 
-            Tables\Columns\TextColumn::make('updated_at')
-                ->dateTime('Y-m-d H:i:s')
-                ->sortable()
-                ->searchable(),
+            // Tables\Columns\TextColumn::make('updated_at')
+            //     ->dateTime('Y-m-d H:i:s')
+            //     ->sortable()
+            //     ->searchable(),
 
             // Tables\Columns\TextColumn::make('deleted_at')
             //     ->dateTime('Y-m-d H:i:s')
@@ -144,7 +144,7 @@ class TransaksiResource extends Resource
         return [
             'index' => Pages\ListTransaksis::route('/'),
             'create' => Pages\CreateTransaksi::route('/create'),
-            'edit' => Pages\EditTransaksi::route('/{record}/edit'),
+            // 'edit' => Pages\EditTransaksi::route('/{record}/edit'),
         ];
     }
 }

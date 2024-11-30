@@ -56,14 +56,14 @@ class UserResource extends Resource
             //         ->dateTime('d-m-Y')
             //         ->sortable()
             //         ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d-m-Y')
-                    ->sortable()
-                    ->searchable(), 
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime('d-m-Y')
-                    ->sortable()
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->dateTime('d-m-Y')
+                //     ->sortable()
+                //     ->searchable(), 
+                // Tables\Columns\TextColumn::make('updated_at')
+                //     ->dateTime('d-m-Y')
+                //     ->sortable()
+                //     ->searchable(),
             ])
             ->filters([
                 //
@@ -92,7 +92,7 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }
