@@ -54,19 +54,25 @@ class DataController extends Controller
             'updated_at' => now(),
         ]);
 
-         // Find the teknisi (e.g., logged-in teknisi or select one)
-    $teknisi = Teknisi::first();  // Or fetch a specific teknisi based on some logic
+// Check if there is a teknisi available
+$teknisi = Teknisi::first(); 
 
-    // Simpan data ke tabel `transaksis`
-    Transaksi::create([
-        'id_teknisi' => $teknisi ? $teknisi->id_teknisi : null, // Assuming you get teknisi based on the logic
-        'id_jenis_layanan' => $validated['id_jenis_layanan'],
-        'id_jenis_properti' => $validated['id_jenis_properti'],
-        'nama' => $pelanggan->nama,
-        'total_biaya' => 0, // You can set this to a calculated value if needed
-        'status' => 'progress', // Or set the status as needed
-        'id' => Auth::id(), // User ID who is creating this transaction
-    ]);
+if (!$teknisi) {
+    // Handle the case when there is no teknisi, e.g., set to a default value or handle an error
+    return redirect()->back()->with('error', 'No teknisi available!');
+}
+
+// Simpan data ke tabel `transaksis`
+Transaksi::create([
+    'id_teknisi' => $teknisi->id_teknisi,  // Will not be null now
+    'id_jenis_layanan' => $validated['id_jenis_layanan'],
+    'id_jenis_properti' => $validated['id_jenis_properti'],
+    'nama' => $pelanggan->nama,
+    'total_biaya' => 0, // You can set this to a calculated value if needed
+    'status' => 'progress', // Or set the status as needed
+    'id' => Auth::id(), // User ID who is creating this transaction
+]);
+
 
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Data berhasil disimpan!');

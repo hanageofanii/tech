@@ -564,8 +564,6 @@
     </section>
 
 
-    {{-- ChatBot --}}
-    <!-- ChatBot -->
     <section class="fixed bottom-0 right-0 mb-4 sm:mb-8 mr-4 sm:mr-8">
         <!-- Chat Button -->
         <button id="open-chat"
@@ -596,12 +594,28 @@
 
                 <!-- Chat Messages -->
                 <div id="chatbox" class="p-4 h-64 sm:h-72 overflow-y-auto space-y-2">
-                    <!-- Chat Messages Will Be Appended Here -->
+                    <!-- Initial Message -->
+                    <div class="mb-2">
+                        <p class="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">Halo! Anda bisa bertanya
+                            tentang:</p>
+                        <ul class="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 mt-2">
+                            <li>1. Lokasi CV Rama Tehnik</li>
+                            <li>2. Layanan yang kami tawarkan</li>
+                            <li>3. Jam operasional</li>
+                            <li>4. Harga perbaikan AC</li>
+                            <li>5. Kontak kami</li>
+                            <li>6. Jenis AC yang kami perbaiki</li>
+                            <li>7. Proses perbaikan AC</li>
+                            <li>8. Waktu estimasi perbaikan</li>
+                            <li>9. Ketersediaan teknisi</li>
+                            <li>10. Garansi layanan kami</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- Input and Send Button -->
                 <div class="p-4 border-t flex">
-                    <input id="user-input" type="text" placeholder="Type a message"
+                    <input id="user-input" type="text" placeholder="Tanya apa saja!"
                         class="w-full px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <button id="send-button"
                         class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-400 transition duration-300">Send</button>
@@ -609,9 +623,6 @@
             </div>
         </div>
     </section>
-
-
-
 
     <script>
         const chatbox = document.getElementById("chatbox");
@@ -621,21 +632,17 @@
         const openChatButton = document.getElementById("open-chat");
         const closeChatButton = document.getElementById("close-chat");
 
-        let isChatboxOpen = true; // Set the initial state to open
+        let isChatboxOpen = true;
 
         // Function to toggle the chatbox visibility
         function toggleChatbox() {
             chatContainer.classList.toggle("hidden");
-            isChatboxOpen = !isChatboxOpen; // Toggle the state
+            isChatboxOpen = !isChatboxOpen;
         }
 
-        // Add an event listener to the open chat button
         openChatButton.addEventListener("click", toggleChatbox);
-
-        // Add an event listener to the close chat button
         closeChatButton.addEventListener("click", toggleChatbox);
 
-        // Add an event listener to the send button
         sendButton.addEventListener("click", function() {
             const userMessage = userInput.value;
             if (userMessage.trim() !== "") {
@@ -672,9 +679,53 @@
         }
 
         function respondToUser(userMessage) {
-            // Replace this with your chatbot logic
+            const message = userMessage.toLowerCase().trim();
+
+            let botResponse = "";
+
+            // FAQ about CV Rama Tehnik
+            if (message.includes("1") && !message.includes("10")) {
+                botResponse =
+                    "Kami berlokasi di Perumahan Kota Serang Baru Blok B 71 No 12, Desa Sukaragam, Kec. Serang Baru, Kab. Bekasi.";
+            } else if (message.includes("2")) {
+                botResponse = "Kami menyediakan layanan perbaikan dan pemeliharaan AC untuk rumah dan kantor.";
+            } else if (message.includes("3")) {
+                botResponse = "Kami buka dari Senin sampai Sabtu, pukul 08.00 - 17.00 WIB.";
+            } else if (message.includes("4")) {
+                botResponse =
+                    "Harga perbaikan AC bervariasi tergantung jenis kerusakan. Hubungi kami untuk info lebih lanjut.";
+            } else if (message.includes("5")) {
+                botResponse = "Anda bisa menghubungi kami di 085216202378 atau via email: ayiatendi56@gmail.com.";
+            } else if (message.includes("6")) {
+                botResponse = "Kami dapat memperbaiki berbagai jenis AC, termasuk AC split, AC window, dan AC central.";
+            } else if (message.includes("7")) {
+                botResponse =
+                    "Proses perbaikan AC dimulai dengan diagnosis kerusakan, penggantian komponen, dan pengujian kinerja AC.";
+            } else if (message.includes("8")) {
+                botResponse = "Estimasi waktu perbaikan biasanya antara 1 hingga 3 jam, tergantung kerusakannya.";
+            } else if (message.includes("9")) {
+                botResponse = "Kami memiliki teknisi yang terlatih dan siap datang ke lokasi sesuai jadwal.";
+            } else if (message.includes("10")) {
+                botResponse = "Layanan kami dilengkapi dengan garansi 6 bulan untuk perbaikan yang dilakukan.";
+            } else {
+                botResponse = `
+        Maaf, saya tidak mengerti. Coba tanya yang lain seperti lokasi, layanan, jam operasional, dll. Silahkan input kembali.<br><br>
+        1. Lokasi CV Rama Tehnik<br>
+        2. Layanan yang kami tawarkan<br>
+        3. Jam operasional<br>
+        4. Harga perbaikan AC<br>
+        5. Kontak kami<br>
+        6. Jenis AC yang kami perbaiki<br>
+        7. Proses perbaikan AC<br>
+        8. Waktu estimasi perbaikan<br>
+        9. Ketersediaan teknisi<br>
+        10. Garansi layanan kami<br>
+    `;
+            }
+
+            // Simulate delay for bot response
             setTimeout(() => {
-                addBotMessage("This is a response from the chatbot.");
+                addBotMessage(botResponse);
             }, 500);
         }
 
