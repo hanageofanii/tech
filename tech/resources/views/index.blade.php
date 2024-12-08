@@ -9,6 +9,10 @@
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="SB-Mid-client-2UNf-91HSeVhMcEv"></script>
+
+
 
     <!-- Menyertakan Tailwind CSS dari CDN untuk styling -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -225,8 +229,7 @@
                 Reservasi Form
             </div>
             <form class="py-4 px-6" action="{{ route('submit.form') }}" method="POST">
-                @csrf <!-- CSRF token for security -->
-
+                @csrf
                 <!-- Name -->
                 <div class="mb-4">
                     <label for="nama" class="block text-gray-700 font-bold mb-2">Name</label>
@@ -325,22 +328,94 @@
             </form>
 
             <!-- Success Message -->
-            @if (session('success'))
+            @if (session('orderDetails'))
                 <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: '{{ session('success') }}',
-                        showConfirmButton: true,
-                        confirmButtonText: 'Tutup',
-                        timer: 5000
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            document.getElementById('regis').scrollIntoView({
-                                behavior: 'smooth'
-                            });
-                        }
-                    });
+                    const details = @json(session('orderDetails'));
+                    let snapToken = '';
+
+                    // Fetch Snap Token from server
+                    fetch("{{ route('get.midtrans.token') }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({
+                                order_id: details.order_id,
+                                total_biaya: details.total_biaya,
+                                name: details.name,
+                                email: details.email,
+                                phone: details.phone
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.token) {
+                                snapToken = data.token; // Assign the token to snapToken variable
+
+                                // Show order details in the popup and ask to pay
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Order Details',
+                                    html: `
+                                <div style="text-align: justify;">
+                                    <strong>Name:</strong> ${details.name}<br>
+                                    <strong>Email:</strong> ${details.email}<br>
+                                    <strong>Phone:</strong> ${details.phone}<br>
+                                    <strong>Address:</strong> ${details.address}<br>
+                                    <strong>Date:</strong> ${details.date}<br>
+                                    <strong>Time:</strong> ${details.time}<br>
+                                    <strong>Service:</strong> ${details.service}<br>
+                                    <strong>Property:</strong> ${details.property}<br>
+                                    ${details.notes ? `<strong>Notes:</strong> ${details.notes}<br>` : ''}
+                                    <strong>Price:</strong> ${details.total_biaya}<br>
+                                </div>
+                            `,
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Pay'
+                                }).then(result => {
+                                    if (result.isConfirmed && snapToken) {
+                                        // Trigger Midtrans Snap payment
+                                        window.snap.pay(snapToken, {
+                                            onSuccess: function(result) {
+                                                // Show success message directly on the page
+                                                Swal.fire('Payment Success', 'Your payment was successful!',
+                                                    'success');
+                                                // Update page content with payment details
+                                                document.getElementById('payment-status').innerHTML = `
+                                                <h3>Payment Status: Successful</h3>
+                                                <p>Order ID: ${details.order_id}</p>
+                                                <p>Amount Paid: ${details.total_biaya}</p>
+                                            `;
+                                            },
+                                            onPending: function(result) {
+                                                // Show pending message directly on the page
+                                                Swal.fire('Payment Pending', 'Your payment is pending.',
+                                                    'warning');
+                                                document.getElementById('payment-status').innerHTML = `
+                                                <h3>Payment Status: Pending</h3>
+                                                <p>Please check back later for the payment status.</p>
+                                            `;
+                                            },
+                                            onError: function(result) {
+                                                // Show error message directly on the page
+                                                Swal.fire('Payment Error', 'Payment failed!', 'error');
+                                                document.getElementById('payment-status').innerHTML = `
+                                                <h3>Payment Status: Failed</h3>
+                                                <p>An error occurred. Please try again later.</p>
+                                            `;
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                Swal.fire('Error', 'Unable to fetch Snap token!', 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching payment token:', error);
+                            Swal.fire('Error', 'Unable to fetch payment token!', 'error');
+                        });
                 </script>
             @endif
         </div>
@@ -417,7 +492,7 @@
                             timer: 5000
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                document.getElementById('contact').scrollIntoView({
+                                document.getElementById().scrollIntoView({
                                     behavior: 'smooth'
                                 });
                             }

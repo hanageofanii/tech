@@ -8,9 +8,9 @@ use App\Models\Pelanggan;
 use App\Models\Transaksi;
 use App\Models\JenisLayanan;
 use App\Models\JenisProperti;
-use App\Models\User;
 use App\Models\Teknisi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class DataController extends Controller
 {
@@ -40,7 +40,7 @@ class DataController extends Controller
         );
 
         // Simpan data ke tabel `data_layanan_pelanggans`
-        $dataLayanan = DB::table('data_layanan_pelanggans')->insertGetId([
+        $dataLayananId = DB::table('data_layanan_pelanggans')->insertGetId([
             'id_jenis_layanan' => $validated['id_jenis_layanan'],
             'id_jenis_properti' => $validated['id_jenis_properti'],
             'nama' => $pelanggan->nama,
@@ -54,27 +54,42 @@ class DataController extends Controller
             'updated_at' => now(),
         ]);
 
-// Check if there is a teknisi available
-$teknisi = Teknisi::first(); 
+        // Check if there is a teknisi available
+        $teknisi = Teknisi::first();
 
-if (!$teknisi) {
-    // Handle the case when there is no teknisi, e.g., set to a default value or handle an error
-    return redirect()->back()->with('error', 'No teknisi available!');
-}
+        if (!$teknisi) {
+            // Handle the case when there is no teknisi
+            return redirect()->back()->with('error', 'No teknisi available!');
+        }
 
-// Simpan data ke tabel `transaksis`
-Transaksi::create([
-    'id_teknisi' => $teknisi->id_teknisi,  // Will not be null now
-    'id_jenis_layanan' => $validated['id_jenis_layanan'],
-    'id_jenis_properti' => $validated['id_jenis_properti'],
-    'nama' => $pelanggan->nama,
-    'total_biaya' => 0, // You can set this to a calculated value if needed
-    'status' => 'progress', // Or set the status as needed
-    'id' => Auth::id(), // User ID who is creating this transaction
-]);
+        // Simpan data ke tabel `transaksis`
+        Transaksi::create([
+            'id_teknisi' => $teknisi->id_teknisi,
+            'id_jenis_layanan' => $validated['id_jenis_layanan'],
+            'id_jenis_properti' => $validated['id_jenis_properti'],
+            'nama' => $pelanggan->nama,
+            'total_biaya' =>  JenisLayanan::find($validated['id_jenis_layanan'])->harga, // Adjust total cost as needed
+            'status' => 'progress', // Set the status
+            'id' => Auth::id(),
+        ]);
 
+        // Kirim detail reservasi ke tampilan
+        $details = [
+            'name' => $pelanggan->nama,
+            'email' => $pelanggan->email,
+            'phone' => $pelanggan->no_hp,
+            'address' => $pelanggan->alamat,
+            'date' => $validated['tanggal'],
+            'time' => $validated['waktu'],
+            'service' => JenisLayanan::find($validated['id_jenis_layanan'])->jenis_layanan,
+            'property' => JenisProperti::find($validated['id_jenis_properti'])->jenis_properti,
+            'notes' => $validated['notes'],
+            'total_biaya' =>  JenisLayanan::find($validated['id_jenis_layanan'])->harga,
+            'order_id' => 'TRX-' . time()
+        ];
 
-        // Redirect kembali dengan pesan sukses
+        Session::flash('orderDetails', $details);
+
         return redirect()->back()->with('success', 'Data berhasil disimpan!');
     }
 }

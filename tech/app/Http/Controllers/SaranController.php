@@ -22,6 +22,6 @@ class SaranController extends Controller
         ]);
         
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Saran Anda telah berhasil dikirim.');
+        return redirect()->back()->with('sukses', 'Saran Anda telah berhasil dikirim.');
     }
 }

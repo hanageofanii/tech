@@ -18,13 +18,21 @@ class MidtransController extends Controller
         Config::$isSanitized = true;
         Config::$is3ds = true;
 
+        // Validasi input
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'no_hp' => 'required|string|max:15',
+            'total_biaya' => 'required|numeric',
+        ]);
+
         // Data Transaksi
         $orderId = 'ORDER-' . time();
-        $grossAmount = 100000; // Set nominal transaksi
+        $grossAmount = $validated['total_biaya']; // Set nominal transaksi from input
         $customerDetails = [
-            'first_name' => $request->nama,
-            'email' => $request->email,
-            'phone' => $request->no_hp,
+            'first_name' => $validated['nama'],
+            'email' => $validated['email'],
+            'phone' => $validated['no_hp'],
         ];
 
         // Parameter untuk Midtrans
@@ -37,11 +45,14 @@ class MidtransController extends Controller
         ];
 
         // Generate Snap Token
-        $snapToken = Snap::getSnapToken($params);
-
-        return response()->json([
-            'snap_token' => $snapToken,
-        ]);
+        try {
+            $snapToken = Snap::getSnapToken($params);
+            return response()->json([
+                'snap_token' => $snapToken,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to generate Snap token: ' . $e->getMessage()]);
+        }
     }
 
     public function notificationHandler(Request $request)
@@ -52,22 +63,19 @@ class MidtransController extends Controller
         $transaction = $notif->transaction_status;
         $orderId = $notif->order_id;
 
-        if ($transaction == 'capture') {
-            // Pembayaran berhasil
+        // Defining status based on transaction status
+        $status = 'pending';
+        if ($transaction == 'capture' || $transaction == 'settlement') {
             $status = 'success';
-        } else if ($transaction == 'settlement') {
-            $status = 'settlement';
-        } else if ($transaction == 'pending') {
-            $status = 'pending';
-        } else if ($transaction == 'deny') {
+        } elseif ($transaction == 'deny') {
             $status = 'deny';
-        } else if ($transaction == 'expire') {
+        } elseif ($transaction == 'expire') {
             $status = 'expired';
-        } else if ($transaction == 'cancel') {
+        } elseif ($transaction == 'cancel') {
             $status = 'canceled';
         }
 
-        // Simpan status transaksi ke database
+        // Update transaksi status in database
         $transaksi = Transaksi::where('order_id', $orderId)->first();
         if ($transaksi) {
             $transaksi->status = $status;
