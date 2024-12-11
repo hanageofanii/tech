@@ -9,8 +9,8 @@
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="SB-Mid-client-2UNf-91HSeVhMcEv"></script>
+    <script type="text/javascript" src="https://app.midtrans.com/snap/snap.js"
+        data-client-key="Mid-client-N91n-RHNLEsDtFdC"></script>
 
 
 
