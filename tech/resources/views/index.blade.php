@@ -9,8 +9,10 @@
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <script type="text/javascript" src="https://app.midtrans.com/snap/snap.js"
-        data-client-key="Mid-client-N91n-RHNLEsDtFdC"></script>
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="SB-Mid-client-Z07YDL03Tk6J8IkZ"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
 
 
@@ -38,7 +40,7 @@
                         <a href="#hero" class="text-gray-800 font-bold hover:text-2 hover:underline">Home</a>
                         <a href="#about" class="text-gray-800 font-bold hover:text-2  hover:underline">About Us</a>
                         <a href="#service" class="text-gray-800 font-bold hover:text-2 hover:underline">Services</a>
-                        <a href="#regis" class="text-gray-800 font-bold hover:text-2 hover:underline">Reservation</a>
+                        <a href="#regis" class="text-gray-800 font-bold hover:text-2 hover:underline">ServiceForm</a>
                         <a href="#contact" class="text-gray-800 font-bold hover:text-2 hover:underline">Contact
                             Us</a>
                     </div>
@@ -69,7 +71,7 @@
                     <a href="#hero" class="block text-gray-800 hover:text-black hover:underline">Home</a>
                     <a href="about" class="block text-gray-800 hover:text-black hover:underline">About Us</a>
                     <a href="#service" class="block text-gray-800 hover:text-black hover:underline">Services</a>
-                    <a href="#regis" class="block text-gray-800 hover:text-black hover:underline">Reservation</a>
+                    <a href="#regis" class="block text-gray-800 hover:text-black hover:underline">ServiceForm</a>
                     <a href="#contact" class="block text-gray-800 hover:text-black hover:underline">Contact Us</a>
                     <!-- Login Button for Mobile -->
                     <a href="/admin/login">
@@ -226,7 +228,7 @@
         <div class="max-w-3xl mx-auto mt-8 mb-10 bg-white shadow-md rounded-lg overflow-hidden">
             <div class="text-2xl py-4 px-6 text-white text-center font-bold uppercase"
                 style="background-color: #161A4C;">
-                Reservasi Form
+                Formulir Layanan
             </div>
             <form class="py-4 px-6" action="{{ route('submit.form') }}" method="POST">
                 @csrf
@@ -263,19 +265,52 @@
                 </div>
 
                 <!-- Date and Time -->
+                <!-- Date and Time -->
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
                     <div class="w-full sm:w-1/2">
                         <label for="tanggal" class="block text-gray-700 font-bold mb-2">Date</label>
                         <input type="date" id="tanggal" name="tanggal"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            required>
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <small class="text-red-500">Hari Minggu Libur</small>
                     </div>
+
                     <div class="w-full sm:w-1/2">
                         <label for="waktu" class="block text-gray-700 font-bold mb-2">Time</label>
-                        <input type="time" id="waktu" name="waktu"
+                        <select id="waktu" name="waktu"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             required>
+                            <option value="08:00">08:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="16:00">16:00</option>
+                        </select>
+
                     </div>
+
+                </div>
+
+
+                <!-- Checkbox for knowing the issue -->
+                <div class="mb-4 flex items-center">
+                    <label class="text-gray-700 font-bold mr-4">Apakah Anda sudah mengetahui masalahnya?</label>
+                    <div class="flex items-center mr-6">
+                        <input type="radio" id="yes_problem" name="knows_problem" value="iya" class="mr-2">
+                        <label for="yes_problem" class="text-gray-700">Ya</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="no_problem" name="knows_problem" value="tidak" class="mr-2">
+                        <label for="no_problem" class="text-gray-700">Tidak</label>
+                    </div>
+                </div>
+
+                <!-- Description for when the user doesn't know the problem -->
+                <div id="problem_description" class="mb-4 text-gray-600 font-medium" style="display: none;">
+                    <p>Pilih 'Cek Kondisi' jika masalah belum diketahui. Isi formulir ulang untuk layanan tambahan.</p>
+                </div>
+
+                <div id="noted_description" class="mb-4 text-gray-600 font-medium" style="display: none;">
+                    <p>Isi formulir ulang untuk layanan tambahan.</p>
                 </div>
 
                 <!-- Jenis Layanan and Jenis Properti -->
@@ -321,105 +356,116 @@
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 </div>
 
+                <!-- reCAPTCHA -->
+                <div class="g-recaptcha mb-4 py-2 px-3" data-sitekey="6Lcdmq8qAAAAADQYhNKHZvXy_Dkuk7HAbvXL-xHH"
+                    style="transform: scale(0.8); transform-origin: 0 0;"></div>
+
+                <!-- Pesan peringatan di bawah reCAPTCHA -->
+                <p id="recaptchaWarning" style="color: red; font-size: 12px; display: none;">Please check reCAPTCHA
+                    first</p>
+
                 <!-- Submit Button -->
                 <div class="mb-4 flex justify-center items-center">
                     <button type="submit" class="bg-blue-500 hover:bg-1 text-white py-2 px-12 rounded">Kirim</button>
                 </div>
             </form>
+        </div>
 
-            <!-- Success Message -->
-            @if (session('orderDetails'))
-                <script>
-                    const details = @json(session('orderDetails'));
-                    let snapToken = '';
 
-                    // Fetch Snap Token from server
-                    fetch("{{ route('get.midtrans.token') }}", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                            },
-                            body: JSON.stringify({
-                                order_id: details.order_id,
-                                total_biaya: details.total_biaya,
-                                name: details.name,
-                                email: details.email,
-                                phone: details.phone
-                            })
+        <!-- Success Message -->
+        @if (session('orderDetails'))
+            <script>
+                const details = @json(session('orderDetails'));
+                let snapToken = '';
+
+                // Fetch Snap Token from server
+                fetch("{{ route('get.midtrans.token') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            order_id: details.order_id,
+                            total_biaya: details.total_biaya,
+                            name: details.name,
+                            email: details.email,
+                            phone: details.phone
                         })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.token) {
-                                snapToken = data.token; // Assign the token to snapToken variable
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.token) {
+                            snapToken = data.token; // Assign the token to snapToken variable
 
-                                // Show order details in the popup and ask to pay
-                                Swal.fire({
-                                    icon: 'info',
-                                    title: 'Order Details',
-                                    html: `
-                                <div style="text-align: justify;">
-                                    <strong>Name:</strong> ${details.name}<br>
-                                    <strong>Email:</strong> ${details.email}<br>
-                                    <strong>Phone:</strong> ${details.phone}<br>
-                                    <strong>Address:</strong> ${details.address}<br>
-                                    <strong>Date:</strong> ${details.date}<br>
-                                    <strong>Time:</strong> ${details.time}<br>
-                                    <strong>Service:</strong> ${details.service}<br>
-                                    <strong>Property:</strong> ${details.property}<br>
-                                    ${details.notes ? `<strong>Notes:</strong> ${details.notes}<br>` : ''}
-                                    <strong>Price:</strong> ${details.total_biaya}<br>
-                                </div>
-                            `,
-                                    showCancelButton: true,
-                                    confirmButtonText: 'Pay'
-                                }).then(result => {
-                                    if (result.isConfirmed && snapToken) {
-                                        // Trigger Midtrans Snap payment
-                                        window.snap.pay(snapToken, {
-                                            onSuccess: function(result) {
-                                                // Show success message directly on the page
-                                                Swal.fire('Payment Success', 'Your payment was successful!',
-                                                    'success');
-                                                // Update page content with payment details
-                                                document.getElementById('payment-status').innerHTML = `
+                            // Show order details in the popup and ask to pay
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Order Details',
+                                html: `
+                                    <div style="text-align: justify;">
+                                        <strong>Name:</strong> ${details.name}<br>
+                                        <strong>Email:</strong> ${details.email}<br>
+                                        <strong>Phone:</strong> ${details.phone}<br>
+                                        <strong>Address:</strong> ${details.address}<br>
+                                        <strong>Date:</strong> ${details.date}<br>
+                                        <strong>Time:</strong> ${details.time}<br>
+                                        <strong>Service:</strong> ${details.service}<br>
+                                        <strong>Property:</strong> ${details.property}<br>
+                                        ${details.notes ? `<strong>Notes:</strong> ${details.notes}<br>` : ''}
+                                        <strong>Price:</strong> ${details.total_biaya}<br>
+                                    </div>
+                                `,
+                                showCancelButton: true,
+                                confirmButtonText: 'Pay'
+                            }).then(result => {
+                                if (result.isConfirmed && snapToken) {
+                                    // Trigger Midtrans Snap payment
+                                    window.snap.pay(snapToken, {
+                                        onSuccess: function(result) {
+                                            // Show success message directly on the page
+                                            Swal.fire('Payment Success', 'Your payment was successful!',
+                                                'success');
+                                            // Update page content with payment details
+                                            document.getElementById('payment-status').innerHTML = `
                                                 <h3>Payment Status: Successful</h3>
                                                 <p>Order ID: ${details.order_id}</p>
                                                 <p>Amount Paid: ${details.total_biaya}</p>
                                             `;
-                                            },
-                                            onPending: function(result) {
-                                                // Show pending message directly on the page
-                                                Swal.fire('Payment Pending', 'Your payment is pending.',
-                                                    'warning');
-                                                document.getElementById('payment-status').innerHTML = `
+                                        },
+                                        onPending: function(result) {
+                                            // Show pending message directly on the page
+                                            Swal.fire('Payment Pending', 'Your payment is pending.',
+                                                'warning');
+                                            document.getElementById('payment-status').innerHTML = `
                                                 <h3>Payment Status: Pending</h3>
                                                 <p>Please check back later for the payment status.</p>
                                             `;
-                                            },
-                                            onError: function(result) {
-                                                // Show error message directly on the page
-                                                Swal.fire('Payment Error', 'Payment failed!', 'error');
-                                                document.getElementById('payment-status').innerHTML = `
+                                        },
+                                        onError: function(result) {
+                                            // Show error message directly on the page
+                                            Swal.fire('Payment Error', 'Payment failed!', 'error');
+                                            document.getElementById('payment-status').innerHTML = `
                                                 <h3>Payment Status: Failed</h3>
                                                 <p>An error occurred. Please try again later.</p>
                                             `;
-                                            }
-                                        });
-                                    }
-                                });
-                            } else {
-                                Swal.fire('Error', 'Unable to fetch Snap token!', 'error');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching payment token:', error);
-                            Swal.fire('Error', 'Unable to fetch payment token!', 'error');
-                        });
-                </script>
-            @endif
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            Swal.fire('Error', 'Unable to fetch Snap token!', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching payment token:', error);
+                        Swal.fire('Error', 'Unable to fetch payment token!', 'error');
+                    });
+            </script>
+        @endif
         </div>
     </section>
+
 
 
 
@@ -590,13 +636,15 @@
                         <!-- Address Section -->
                         <div class="px-4 my-4 w-full sm:w-auto xl:w-2/6 text-center sm:text-left">
                             <div>
-                                <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">Address</h2>
+                                <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">Waktu Layanan
+                                </h2>
                             </div>
-                            <div>
-                                <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="200"
-                                    style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                            <div class="text-gray-700">
+                                <p>Senin - Sabtu: 08.00 - 17.00 WIB</p>
+                                <p>Minggu: Libur</p>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -682,8 +730,7 @@
                             <li>6. Jenis AC yang kami perbaiki</li>
                             <li>7. Proses perbaikan AC</li>
                             <li>8. Waktu estimasi perbaikan</li>
-                            <li>9. Ketersediaan teknisi</li>
-                            <li>10. Garansi layanan kami</li>
+                            <li>9. Garansi layanan kami</li>
                         </ul>
                     </div>
                 </div>
@@ -700,130 +747,175 @@
     </section>
 
     <script>
-        const chatbox = document.getElementById("chatbox");
-        const chatContainer = document.getElementById("chat-container");
-        const userInput = document.getElementById("user-input");
-        const sendButton = document.getElementById("send-button");
-        const openChatButton = document.getElementById("open-chat");
-        const closeChatButton = document.getElementById("close-chat");
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cookie Policy
+            const acceptButton = document.getElementById("accept-button");
+            const closeButton = document.getElementById("close-button");
+            const cookiePolicy = document.getElementById("cookie-policy");
 
-        let isChatboxOpen = true;
+            acceptButton.addEventListener("click", function() {
+                cookiePolicy.style.display = "none"; // Hide the cookie policy
+            });
 
-        // Function to toggle the chatbox visibility
-        function toggleChatbox() {
-            chatContainer.classList.toggle("hidden");
-            isChatboxOpen = !isChatboxOpen;
-        }
+            closeButton.addEventListener("click", function() {
+                cookiePolicy.style.display = "none"; // Hide the cookie policy
+            });
 
-        openChatButton.addEventListener("click", toggleChatbox);
-        closeChatButton.addEventListener("click", toggleChatbox);
+            // reCAPTCHA and Form Handling
+            const yesRadio = document.getElementById('yes_problem');
+            const noRadio = document.getElementById('no_problem');
+            const problemDescription = document.getElementById('problem_description');
+            const notedDescription = document.getElementById('noted_description');
 
-        sendButton.addEventListener("click", function() {
-            const userMessage = userInput.value;
-            if (userMessage.trim() !== "") {
-                addUserMessage(userMessage);
-                respondToUser(userMessage);
-                userInput.value = "";
+            // Menambahkan event listener untuk "No"
+            noRadio.addEventListener('change', function() {
+                // Menampilkan deskripsi masalah jika memilih "Tidak"
+                problemDescription.style.display = 'block';
+                // Menyembunyikan deskripsi catatan jika memilih "Tidak"
+                notedDescription.style.display = 'none';
+            });
+
+            // Menambahkan event listener untuk "Yes"
+            yesRadio.addEventListener('change', function() {
+                // Menyembunyikan deskripsi masalah jika memilih "Ya"
+                problemDescription.style.display = 'none';
+                // Menampilkan deskripsi catatan jika memilih "Ya"
+                notedDescription.style.display = 'block';
+            });
+
+
+            document.querySelector('#regis').addEventListener('submit', function(event) {
+                const recaptchaResponse = grecaptcha.getResponse();
+                const recaptchaWarning = document.getElementById('recaptchaWarning');
+
+                if (!recaptchaResponse) {
+                    // Show warning if reCAPTCHA isn't checked
+                    recaptchaWarning.style.display = 'block';
+                    event.preventDefault(); // Prevent form submission
+                } else {
+                    // Hide warning if reCAPTCHA is checked
+                    recaptchaWarning.style.display = 'none';
+                }
+            });
+
+            // Chatbox Functionality
+            const chatbox = document.getElementById("chatbox");
+            const chatContainer = document.getElementById("chat-container");
+            const userInput = document.getElementById("user-input");
+            const sendButton = document.getElementById("send-button");
+            const openChatButton = document.getElementById("open-chat");
+            const closeChatButton = document.getElementById("close-chat");
+
+            let isChatboxOpen = false;
+
+            // Function to toggle chatbox visibility
+            function toggleChatbox() {
+                chatContainer.classList.toggle("hidden");
+                isChatboxOpen = !isChatboxOpen;
             }
-        });
 
-        userInput.addEventListener("keyup", function(event) {
-            if (event.key === "Enter") {
+            openChatButton.addEventListener("click", toggleChatbox);
+            closeChatButton.addEventListener("click", toggleChatbox);
+
+            // Send and receive messages in chatbox
+            sendButton.addEventListener("click", function() {
                 const userMessage = userInput.value;
-                addUserMessage(userMessage);
-                respondToUser(userMessage);
-                userInput.value = "";
-            }
-        });
+                if (userMessage.trim() !== "") {
+                    addUserMessage(userMessage);
+                    respondToUser(userMessage);
+                    userInput.value = "";
+                }
+            });
 
-        function addUserMessage(message) {
-            const messageElement = document.createElement("div");
-            messageElement.classList.add("mb-2", "text-right");
-            messageElement.innerHTML = `<p class="bg-blue-500 text-white rounded-lg py-2 px-4 inline-block">${message}</p>`;
-            chatbox.appendChild(messageElement);
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
+            userInput.addEventListener("keyup", function(event) {
+                if (event.key === "Enter") {
+                    const userMessage = userInput.value;
+                    addUserMessage(userMessage);
+                    respondToUser(userMessage);
+                    userInput.value = "";
+                }
+            });
 
-        function addBotMessage(message) {
-            const messageElement = document.createElement("div");
-            messageElement.classList.add("mb-2");
-            messageElement.innerHTML =
-                `<p class="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">${message}</p>`;
-            chatbox.appendChild(messageElement);
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
-
-        function respondToUser(userMessage) {
-            const message = userMessage.toLowerCase().trim();
-
-            let botResponse = "";
-
-            // FAQ about CV Rama Tehnik
-            if (message.includes("1") && !message.includes("10")) {
-                botResponse =
-                    "Kami berlokasi di Perumahan Kota Serang Baru Blok B 71 No 12, Desa Sukaragam, Kec. Serang Baru, Kab. Bekasi.";
-            } else if (message.includes("2")) {
-                botResponse = "Kami menyediakan layanan perbaikan dan pemeliharaan AC untuk rumah dan kantor.";
-            } else if (message.includes("3")) {
-                botResponse = "Kami buka dari Senin sampai Sabtu, pukul 08.00 - 17.00 WIB.";
-            } else if (message.includes("4")) {
-                botResponse =
-                    "Harga perbaikan AC bervariasi tergantung jenis kerusakan. Hubungi kami untuk info lebih lanjut.";
-            } else if (message.includes("5")) {
-                botResponse = "Anda bisa menghubungi kami di 085216202378 atau via email: ayiatendi56@gmail.com.";
-            } else if (message.includes("6")) {
-                botResponse = "Kami dapat memperbaiki berbagai jenis AC, termasuk AC split, AC window, dan AC central.";
-            } else if (message.includes("7")) {
-                botResponse =
-                    "Proses perbaikan AC dimulai dengan diagnosis kerusakan, penggantian komponen, dan pengujian kinerja AC.";
-            } else if (message.includes("8")) {
-                botResponse = "Estimasi waktu perbaikan biasanya antara 1 hingga 3 jam, tergantung kerusakannya.";
-            } else if (message.includes("9")) {
-                botResponse = "Kami memiliki teknisi yang terlatih dan siap datang ke lokasi sesuai jadwal.";
-            } else if (message.includes("10")) {
-                botResponse = "Layanan kami dilengkapi dengan garansi 6 bulan untuk perbaikan yang dilakukan.";
-            } else {
-                botResponse = `
-        Maaf, saya tidak mengerti. Coba tanya yang lain seperti lokasi, layanan, jam operasional, dll. Silahkan input kembali.<br><br>
-        1. Lokasi CV Rama Tehnik<br>
-        2. Layanan yang kami tawarkan<br>
-        3. Jam operasional<br>
-        4. Harga perbaikan AC<br>
-        5. Kontak kami<br>
-        6. Jenis AC yang kami perbaiki<br>
-        7. Proses perbaikan AC<br>
-        8. Waktu estimasi perbaikan<br>
-        9. Ketersediaan teknisi<br>
-        10. Garansi layanan kami<br>
-    `;
+            // Function to add user messages
+            function addUserMessage(message) {
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("mb-2", "text-right");
+                messageElement.innerHTML =
+                    `<p class="bg-blue-500 text-white rounded-lg py-2 px-4 inline-block">${message}</p>`;
+                chatbox.appendChild(messageElement);
+                chatbox.scrollTop = chatbox.scrollHeight;
             }
 
-            // Simulate delay for bot response
-            setTimeout(() => {
-                addBotMessage(botResponse);
-            }, 500);
-        }
+            // Function to add bot responses
+            function addBotMessage(message) {
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("mb-2");
+                messageElement.innerHTML =
+                    `<p class="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">${message}</p>`;
+                chatbox.appendChild(messageElement);
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
 
-        // Get the elements
-        const cookiePolicy = document.getElementById("cookie-policy");
-        const closeButton = document.getElementById("close-button");
-        const acceptButton = document.getElementById("accept-button");
+            // Respond based on user input
+            function respondToUser(userMessage) {
+                const message = userMessage.toLowerCase().trim();
+                let botResponse = "";
 
-        // Event listener for the "Accept" button
-        acceptButton.addEventListener("click", function() {
-            cookiePolicy.style.display = "none"; // Hide the popup
-        });
+                if (message.includes("1")) {
+                    botResponse = "Kami berlokasi di Perumahan Kota Serang Baru Blok B 71 No 12.";
+                } else if (message.includes("2")) {
+                    botResponse = "Kami menyediakan layanan perbaikan dan pemeliharaan AC.";
+                } else if (message.includes("3")) {
+                    botResponse = "Kami buka dari Senin sampai Sabtu, pukul 08.00 - 17.00 WIB.";
+                } else if (message.includes("4")) {
+                    botResponse =
+                        "Harga perbaikan AC bervariasi tergantung jenis kerusakan. Hubungi kami untuk info lebih lanjut.";
+                } else if (message.includes("5")) {
+                    botResponse =
+                        "Anda bisa menghubungi kami di 085216202378 atau via email: ayiatendi56@gmail.com.";
+                } else if (message.includes("6")) {
+                    botResponse =
+                        "Kami dapat memperbaiki berbagai jenis AC, termasuk AC split, AC window, dan AC central.";
+                } else if (message.includes("7")) {
+                    botResponse =
+                        "Proses perbaikan AC dimulai dengan diagnosis kerusakan, penggantian komponen, dan pengujian kinerja AC.";
+                } else if (message.includes("8")) {
+                    //     botResponse =
+                    //         "Estimasi waktu perbaikan biasanya antara 1 hingga 3 jam, tergantung kerusakannya.";
+                    // } else if (message.includes("9")) {
+                    botResponse = "Kami memiliki teknisi yang terlatih dan siap datang ke lokasi sesuai jadwal.";
+                } else if (message.includes("9")) {
+                    botResponse = "Layanan kami dilengkapi dengan garansi 6 bulan untuk perbaikan yang dilakukan.";
+                } else {
+                    botResponse = `
+                Maaf, saya tidak mengerti. Coba tanya yang lain seperti lokasi, layanan, jam operasional, dll. Silahkan input kembali.<br><br>
+                1. Lokasi CV Rama Tehnik<br>
+                2. Layanan yang kami tawarkan<br>
+                3. Jam operasional<br>
+                4. Harga perbaikan AC<br>
+                5. Kontak kami<br>
+                6. Jenis AC yang kami perbaiki<br>
+                7. Proses perbaikan AC<br>
+                8. Waktu estimasi perbaikan<br>
+                9. Garansi layanan kami<br>
+            `;
+                }
 
-        // Event listener for the "X" button
-        closeButton.addEventListener("click", function() {
-            cookiePolicy.style.display = "none"; // Hide the popup
-        });
+                // Simulate delay for bot response
+                setTimeout(() => {
+                    addBotMessage(botResponse);
+                }, 500);
+            }
 
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
 
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
         });
     </script>
 </body>

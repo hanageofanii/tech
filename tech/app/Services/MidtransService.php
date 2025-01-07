@@ -12,7 +12,7 @@ class MidtransService
         // Configure Midtrans API
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         Config::$clientKey = env('MIDTRANS_CLIENT_KEY');
-        Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
+        Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
         Config::$isSanitized = env('MIDTRANS_SANITIZE', true);
         Config::$is3ds = env('MIDTRANS_3DS', true);
 

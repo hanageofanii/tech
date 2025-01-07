@@ -6,6 +6,7 @@ use App\Http\Controllers\DataController;
 use App\Services\MidtransService;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\RecapcthaController;
 
 // Default route
 Route::get('/', function () {

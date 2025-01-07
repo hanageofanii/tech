@@ -13,10 +13,11 @@ class MidtransController extends Controller
     public function createSnapToken(Request $request)
     {
         // Konfigurasi Midtrans
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
+        Config::$clientKey = config('midtrans.client_key');
+        Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+        Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
+        Config::$isSanitized = env('MIDTRANS_SANITIZE', true);
+        Config::$is3ds = env('MIDTRANS_3DS', true);
 
         // Validasi input
         $validated = $request->validate([

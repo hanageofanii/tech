@@ -27,7 +27,30 @@ class DataController extends Controller
             'tanggal' => 'required|date',
             'waktu' => 'required|date_format:H:i',
             'notes' => 'nullable|string|max:500',
+            'g-recaptcha-response' => 'required' 
         ]);
+
+        // Verifikasi reCAPTCHA
+        $recaptchaSecret = '6Lcdmq8qAAAAAEKqcD1cvv44iL3K8da1e4OY4GDC'; 
+        $recaptchaResponse = $request->input('g-recaptcha-response');
+
+        $ch = curl_init('https://www.google.com/recaptcha/api/siteverify');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, [
+            'secret' => $recaptchaSecret,
+            'response' => $recaptchaResponse,
+        ]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $result = json_decode($response);
+
+        if (!$result->success) {
+            // Jika reCAPTCHA gagal, kembali ke form dengan error
+            return redirect()->back()->with('error', 'Please check the reCAPTCHA box.');
+        }
 
         // Cek apakah pelanggan sudah ada berdasarkan email
         $pelanggan = Pelanggan::firstOrCreate(
